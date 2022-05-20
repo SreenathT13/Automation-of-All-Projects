@@ -3,14 +3,68 @@ import datetime
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
-import JP128_const as JP
-import Common_function as CF
+import constants as JP
+from fpdf import FPDF
+from PyPDF2 import PdfFileMerger
+import os
+import image
+
+screenshot_path = r"./screenshot"
+if not os.path.isdir(screenshot_path):
+    os.makedirs(screenshot_path)
+
+
+def click_button(UI_button):
+    live = wait.until(EC.element_to_be_clickable((By.XPATH, UI_button)))
+    live.click()
+
+
+def Convert_ProgressLog_text(ProgressLog_txt):
+    handler = open(screenshot_path + "/" + ProgressLog_txt, "+a")
+    handler.write(e.strftime("Time %I:%M %p\n"))
+    handler.write(driver.find_element(By.XPATH, '//*[@id="console_status"]').text)
+    handler.close()
+
+
+def Take_Image(Image_Path, Image_pdf):
+    Image = driver.find_element(By.XPATH, Image_Path)
+    Image.screenshot(screenshot_path + '/image.png')
+    image.image_to_pdf(screenshot_path + '/image.png', Image_pdf)
+
+
+def Text_To_Pdf(txt_File, Pdf_file):
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+    file = open(screenshot_path + "/" + txt_File, "r")
+
+    for xy in file:
+        pdf.cell(200, 10, txt=xy, ln=1, align='l')
+
+    pdf.output(Pdf_file)
+    pdf.close()
+    file.close()
+
+
+def Merger_Pdf(First_pdf, Second_pdf, Result_pdf):
+    File_path = "D:\\TenXer\\gmail_login\\"
+    merger = PdfFileMerger()
+    merger.append(File_path + First_pdf)
+    merger.append(File_path + Second_pdf)
+    merger.write(File_path + Result_pdf)
+    merger.close()
+
+
+def Remove_File(First_file):
+    os.remove(First_file)
+
 
 options = webdriver.ChromeOptions()
-options.add_argument(r'--user-data-dir=C:\Users\THIS PC\Desktop\gmail login\session')
-options.add_argument('--profile-directory=session')
+# options.add_argument(r'--user-data-dir=C:\Users\THIS PC\Desktop\gmail login\session')
+# options.add_argument('--profile-directory=session')
 options.add_argument("--incognito")
 driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=options)
 actions = ActionChains(driver)
@@ -18,16 +72,14 @@ wait = WebDriverWait(driver, 60)
 url = JP.JP128_url
 e = datetime.datetime.now()
 
-# driver.maximize_window()
+driver.maximize_window()
 
 # -------------------------------------------- TURN_ON_LIGHT START------------------------------------------------------
 
 driver.get(url)
-print('11111')
-CF.click_button(JP.login_url)
+click_button(JP.login_url)
 time.sleep(3)
-
-CF.click_button(JP.login_url_1)
+click_button(JP.login_url_1)
 time.sleep(3)
 username = "pritam@tenxertech.com"
 passwrd = "pritam1928"
@@ -40,19 +92,13 @@ time.sleep(5)
 passwrd_1 = '//*[@id="password"]'
 password = driver.find_element(By.XPATH, passwrd_1)
 password.send_keys(passwrd)
-CF.click_button(JP.submit)
+click_button(JP.submit)
 time.sleep(10)
+
 
 pro = 'JP128'
 inputElement = driver.find_element_by_xpath('//*[@id="formSerachBar"]')
 inputElement.send_keys(pro)
-time.sleep(3)
-
-CF.click_button(JP.connect_jp128)
-time.sleep(5)
-
-CF.click_button(JP.Connect_Button)
-time.sleep(5)
 
 # # Scroll the window step by step
 # SCROLL_PAUSE_TIME = 1

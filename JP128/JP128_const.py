@@ -1,11 +1,18 @@
+<<<<<<< HEAD
 login_url = '/html/body/div[1]/div/div/div/div/div/div[1]/div[1]/nav/div[5]/ul/li/a'
+=======
+login_url = '//*[@id="navbarDropdownMenuLink"]'
+>>>>>>> github/nothing
 
 login_url_1 = '/html/body/div[1]/div/div/div/div/div/div[1]/div[1]/nav/div[5]/ul/li/div/a[2]'
 
 JP128_url = 'https://renesas.evmlabs.com'
 
+<<<<<<< HEAD
 connect_jp128 = '//*[@id="formcanvas"]/div[2]/div/div/div[2]/div[2]/a'
 
+=======
+>>>>>>> github/nothing
 submit = '/html/body/div[1]/div/div/div[1]/div/div[3]/form/div[4]/div[1]/button'
 
 Video_refresh_jp128 = '//*[@id="stream_refresh"]'
@@ -48,5 +55,8 @@ Live_video_jp128 = '//*[@id="77a46be1-2b26-51c7-f423-cd51ae5350e2"]/div/tx-eleme
 
 Graph_data = '/html/body/div[1]/div/ng-content/div/div[2]/div/div/div[1]/div[2]/div[2]/div/div/div/div/ul/li[' \
              '1]/div/div/tx-elements/div[2]/div/div[3]/plotly/div/div/div/svg[1]/g[2]/g/rect[1] '
+<<<<<<< HEAD
 
 Connect_Button = '//*[@id="default-dashboard"]/div[1]/nav/div[2]/form/label/span'
+=======
+>>>>>>> github/nothing
