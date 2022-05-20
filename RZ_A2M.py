@@ -69,7 +69,7 @@ options.add_argument("--incognito")
 driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=options)
 actions = ActionChains(driver)
 wait = WebDriverWait(driver, 60)
-url = JP.EU036_url
+url = JP.RZ_url
 e = datetime.datetime.now()
 
 driver.maximize_window()
@@ -88,7 +88,7 @@ connectText = driver.find_element(By.XPATH, path)
 if "Ready" in connectText.text:
     # Scroll the window step by step
     SCROLL_PAUSE_TIME = 1
-    for i in range(1, 10):
+    for i in range(1, 12):
         x_path = f'//*[@id="helpCarousel"]/div[{i}]'
         actions.move_to_element(driver.find_element(By.XPATH, x_path)).perform()
         time.sleep(SCROLL_PAUSE_TIME)
@@ -97,86 +97,9 @@ if "Ready" in connectText.text:
     # clicks the live button for saw the live part
     click_button(JP.Live_Button)
     time.sleep(5)
-
-    # Maximize and take screen shoot
-    click_button(JP.Maximize_live_EU036)
-    time.sleep(5)
-
-    Take_Image(JP.Live_video_path_EU036, 'video_path_1.pdf')
-
-    click_button(JP.Maximize_live_EU036)
-    time.sleep(5)
-
-    Convert_ProgressLog_text('progressLog_1.txt')
-    Text_To_Pdf('progressLog_1.txt', 'progressLog_1.pdf')
-
-    Merger_Pdf('./progressLog_1.pdf', './video_path_1.pdf', './EU036_1.pdf')
-
-    Remove_File('./progressLog_1.pdf')
-    Remove_File('./video_path_1.pdf')
-
-    # Scroll slider
-    Scroll = driver.find_element(By.XPATH, '//*[@id="f70d3edd-8b07-3e62-87d8-21f7f90b8feb"]/span[3]')
-    ActionChains(driver).drag_and_drop_by_offset(Scroll, 40, 0).perform()
-    time.sleep(10)
-
-    # Maximize and take screen shoot
-    click_button(JP.Maximize_live_EU036)
-    time.sleep(5)
-
-    Take_Image(JP.Live_video_path_EU036, 'video_path_2.pdf')
-
-    click_button(JP.Maximize_live_EU036)
-    time.sleep(5)
-
-    driver.save_screenshot(screenshot_path + '/US069.png')
-    image.image_to_pdf(screenshot_path + '/US069.png', "full_screen_EU036.pdf")
-
-    Convert_ProgressLog_text('progressLog_2.txt')
-    Text_To_Pdf('progressLog_2.txt', 'progressLog_2.pdf')
-
-    Merger_Pdf('./progressLog_2.pdf', './video_path_2.pdf', './EU036_2.pdf')
-    Merger_Pdf('./EU036_1.pdf', './EU036_2.pdf', './EU036_3.pdf')
-    Merger_Pdf('./EU036_3.pdf', './full_screen_EU036.pdf', './EU036_4.pdf')
-
-    Remove_File('./progressLog_2.pdf')
-    Remove_File('./video_path_2.pdf')
-    Remove_File('./EU036_1.pdf')
-    Remove_File('./EU036_2.pdf')
-    Remove_File('./EU036_3.pdf')
-    Remove_File('./full_screen_EU036.pdf')
-
-
-# --------------------------------------- TEMPERATURE CONTROL---------------------------------------------------------
-
-    click_button(JP.Temp_Button_EU036)
-    time.sleep(5)
-
-    click_button(JP.Live_video_display_EU036)
-    time.sleep(5)
-
-    Take_Image(JP.Display_live_video_path, 'video_path_3.pdf')
-
-    click_button(JP.Live_video_display_EU036)
-    time.sleep(5)
-
-    Convert_ProgressLog_text('progressLog_3.txt')
-    Text_To_Pdf('progressLog_3.txt', 'progressLog_3.pdf')
-
-    Merger_Pdf('./progressLog_3.pdf', './video_path_3.pdf', './EU036_5.pdf')
-    Merger_Pdf('./EU036_4.pdf', './EU036_5.pdf', './Result_EU036.pdf')
-
-    Remove_File('./progressLog_3.pdf')
-    Remove_File('./video_path_3.pdf')
-    Remove_File('./EU036_4.pdf')
-    Remove_File('./EU036_5.pdf')
-
-    click_button(JP.Temp_Button_EU036)
-    time.sleep(5)
-
-    # Off the radio button
-    click_button(JP.Connect_Button)
 else:
     print('Some one use this board')
     driver.save_screenshot(screenshot_path + '/US069.png')
-    image.image_to_pdf(screenshot_path + '/US069.png', "Result_EU036.pdf")
+    image.image_to_pdf(screenshot_path + '/US069.png', "Result_RZ_A2M.pdf")
+
+

@@ -65,6 +65,7 @@ def Remove_File(First_file):
 options = webdriver.ChromeOptions()
 options.add_argument(r'--user-data-dir=C:\Users\THIS PC\Desktop\gmail login\session')
 options.add_argument('--profile-directory=session')
+options.add_argument("--incognito")
 driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=options)
 actions = ActionChains(driver)
 wait = WebDriverWait(driver, 60)
@@ -79,7 +80,7 @@ driver.maximize_window()
 # Clicks the radio button for start the live program
 driver.get(url)
 click_button(JP.Connect_Button)
-time.sleep(10)
+time.sleep(5)
 
 path = '//*[@id="default-dashboard"]/div[1]/nav/div[2]/form'
 connectText = driver.find_element(By.XPATH, path)
