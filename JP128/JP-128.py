@@ -1,386 +1,507 @@
 import time
-import datetime
-from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
-import constants as JP
 from fpdf import FPDF
-from PyPDF2 import PdfFileMerger
-import os
-import image
+from selenium.webdriver.common.by import By
+import JP128_const as JP
+import Common_function as CF
+import constants as CS
 
-screenshot_path = r"./screenshot"
-if not os.path.isdir(screenshot_path):
-    os.makedirs(screenshot_path)
+url = CS.evm_url
 
-
-def click_button(UI_button):
-    live = wait.until(EC.element_to_be_clickable((By.XPATH, UI_button)))
-    live.click()
-
-
-def Convert_ProgressLog_text(ProgressLog_txt):
-    handler = open(screenshot_path + "/" + ProgressLog_txt, "+a")
-    handler.write(e.strftime("Time %I:%M %p\n"))
-    handler.write(driver.find_element(By.XPATH, '//*[@id="console_status"]').text)
-    handler.close()
-
-
-def Take_Image(Image_Path, Image_pdf):
-    Image = driver.find_element(By.XPATH, Image_Path)
-    Image.screenshot(screenshot_path + '/image.png')
-    image.image_to_pdf(screenshot_path + '/image.png', Image_pdf)
-
-
-def Text_To_Pdf(txt_File, Pdf_file):
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Arial", size=12)
-    file = open(screenshot_path + "/" + txt_File, "r")
-
-    for xy in file:
-        pdf.cell(200, 10, txt=xy, ln=1, align='l')
-
-    pdf.output(Pdf_file)
-    pdf.close()
-    file.close()
-
-
-def Merger_Pdf(First_pdf, Second_pdf, Result_pdf):
-    File_path = "D:\\TenXer\\gmail_login\\"
-    merger = PdfFileMerger()
-    merger.append(File_path + First_pdf)
-    merger.append(File_path + Second_pdf)
-    merger.write(File_path + Result_pdf)
-    merger.close()
-
-
-def Remove_File(First_file):
-    os.remove(First_file)
-
-
-options = webdriver.ChromeOptions()
-# options.add_argument(r'--user-data-dir=C:\Users\THIS PC\Desktop\gmail login\session')
-# options.add_argument('--profile-directory=session')
-options.add_argument("--incognito")
-driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=options)
-actions = ActionChains(driver)
-wait = WebDriverWait(driver, 60)
-url = JP.JP128_url
-e = datetime.datetime.now()
-
-driver.maximize_window()
 
 # -------------------------------------------- TURN_ON_LIGHT START------------------------------------------------------
 
-driver.get(url)
-click_button(JP.login_url)
-time.sleep(3)
-click_button(JP.login_url_1)
-time.sleep(3)
-username = "pritam@tenxertech.com"
-passwrd = "pritam1928"
+CF.login_and_connect(JP.board_name)
 
-email_1 = '//*[@id="username"]'
-email = driver.find_element(By.XPATH, email_1)
-email.send_keys(username)
-time.sleep(5)
-
-passwrd_1 = '//*[@id="password"]'
-password = driver.find_element(By.XPATH, passwrd_1)
-password.send_keys(passwrd)
-click_button(JP.submit)
-time.sleep(10)
+pdf1 = FPDF()
+pdf1.add_page()
 
 
-pro = 'JP128'
-inputElement = driver.find_element_by_xpath('//*[@id="formSerachBar"]')
-inputElement.send_keys(pro)
+# -------------------------------------------- HEADER FUNCTION---------------------------------------------------------
 
-# # Scroll the window step by step
-# SCROLL_PAUSE_TIME = 1
-# for i in range(1, 12):
-#     x_path = f'//*[@id="helpCarousel"]/div[{i}]'
-#     actions.move_to_element(driver.find_element(By.XPATH, x_path)).perform()
-#     time.sleep(SCROLL_PAUSE_TIME)
-# time.sleep(5)
+def header_function():
+    CF.write_header(pdf1, 'JP128')
 
-# clicks the live button for saw the live part
-# click_button(JP.Live_Button)
-# time.sleep(5)
+    connectText = CF.driver.find_element(By.XPATH, CS.connection_path)
+    # connectText = 'Ready'
 
-# Clicked the refresh button
-# driver.switch_to.frame(driver.find_element(By.XPATH, '//*[@id="77a46be1-2b26-51c7-f423-cd51ae5350e2"]/div/tx-elements'
-#                                                      '/div[2]/div/div/div[3]/iframe'))
-# print('Click for refresh')
-# click_button(JP.Video_refresh_jp128)
-# driver.switch_to.parent_frame()
-# time.sleep(8)
+    if "Ready" in connectText.text:
+        # CONNECTION TESTING
+        CF.click_button(CS.live_button)
+        time.sleep(5)
+        CF.write_result(pdf1, 'Connection :', 'SYSTEM READY')
+        CF.update_progress_log(pdf1)
+        time.sleep(10)
+        print('ggggg')
 
-# clicked turn on the light
-# click_button(JP.Turn_on_light_jp128)
-# time.sleep(5)
+        # -------------------------------------------- VIDEO TESTING ---------------------------------------------------
+        CF.video_testing(pdf1, JP.switch_to_frame)
+        # TAKE IMAGE AND ADD THE PDF
+        CF.click_button(JP.Maximize_live_video)
+        time.sleep(7)
 
-# # maximize video
-# click_button(JP.Maximize_video_jp128)
-# time.sleep(2)
-#
-# # take image
-# Take_Image(JP.Video_container_jp128, 'video_jp128.pdf')
-# time.sleep(5)
-#
-# Convert_ProgressLog_text('light_on.txt')
-# Text_To_Pdf('light_on.txt', 'light_on_jp128.pdf')
-#
-# click_button(JP.Maximize_video_jp128)
-# time.sleep(5)
+        CF.take_image(pdf1, JP.live_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image1.png',
+                      'image1.png')
 
-# maximize graph image and take image
-# click_button(JP.Maximize_graph_jp128)
-# time.sleep(5)
+        CF.click_button(JP.Maximize_live_video)
+        time.sleep(5)
+        print(' complete video testing.....')
 
-# Take_Image(JP.Graph_image_jp128, 'graph_jp128.pdf')
-#
-# click_button(JP.Maximize_graph_jp128)
-# time.sleep(5)
-#
-# Merger_Pdf('./light_on_jp128.pdf', './video_jp128.pdf', './video.pdf')
-# Merger_Pdf('./video.pdf', 'graph_jp128.pdf', './main.pdf')
-#
-# Remove_File('./light_on_jp128.pdf')
-# Remove_File('./video_jp128.pdf')
-# Remove_File('./graph_jp128.pdf')
-# Remove_File('./video.pdf')
-#
-# # ---------------------------------------- TURN_ON_TV START---------------------------------------------------------
-#
-# # click turn of light
-# click_button(JP.Turn_on_tv_jp128)
-# time.sleep(3)
-# click_button(JP.Turn_on_tv_jp128)
-# time.sleep(10)
-#
-# # maximize video
-# click_button(JP.Maximize_video_jp128)
-# time.sleep(2)
-#
-# # take image
-# Take_Image(JP.Video_container_jp128, 'video.pdf')
-#
-# time.sleep(5)
-#
-# Convert_ProgressLog_text('tv_on.txt')
-# Text_To_Pdf('tv_on.txt', 'tv_on_jp128.pdf')
-#
-# click_button(JP.Maximize_video_jp128)
-# time.sleep(5)
-#
-# # maximize graph image and take image
-# click_button(JP.Maximize_graph_jp128)
-# time.sleep(5)
-#
-# Take_Image(JP.Graph_image_jp128, 'graph.pdf')
-#
-# click_button(JP.Maximize_graph_jp128)
-# time.sleep(5)
-#
-# Merger_Pdf('./tv_on_jp128.pdf', './video.pdf', './main1.pdf')
-# Merger_Pdf('./main1.pdf', 'graph.pdf', './main2.pdf')
-# Merger_Pdf('./main.pdf', './main2.pdf', './main3.pdf')
-#
-# Remove_File('./tv_on_jp128.pdf')
-# Remove_File('./video.pdf')
-# Remove_File('./main.pdf')
-# Remove_File('./graph.pdf')
-# Remove_File('./main1.pdf')
-# Remove_File('./main2.pdf')
-#
-# # -------------------------------------------- CHANNEL_UP START---------------------------------------------------------
-#
-# # click turn of light
-# click_button(JP.Channel_up_jp128)
-# time.sleep(3)
-# click_button(JP.Channel_up_jp128)
-# time.sleep(10)
-#
-# # maximize video
-# click_button(JP.Maximize_video_jp128)
-# time.sleep(2)
-#
-# # take image
-# Take_Image(JP.Video_container_jp128, 'video.pdf')
-#
-# time.sleep(5)
-#
-# Convert_ProgressLog_text('channel_up.txt')
-# Text_To_Pdf('channel_up.txt', 'channel_up_jp128.pdf')
-#
-# click_button(JP.Maximize_video_jp128)
-# time.sleep(5)
-#
-# # maximize graph image and take image
-# click_button(JP.Maximize_graph_jp128)
-# time.sleep(5)
-#
-# Take_Image(JP.Graph_image_jp128, 'graph.pdf')
-#
-# click_button(JP.Maximize_graph_jp128)
-# time.sleep(5)
-#
-# Merger_Pdf('./channel_up_jp128.pdf', './video.pdf', './main1.pdf')
-# Merger_Pdf('./main1.pdf', 'graph.pdf', './main2.pdf')
-# Merger_Pdf('./main3.pdf', './main2.pdf', './main4.pdf')
-#
-# Remove_File('./channel_up_jp128.pdf')
-# Remove_File('./video.pdf')
-# Remove_File('./main3.pdf')
-# Remove_File('./graph.pdf')
-# Remove_File('./main1.pdf')
-# Remove_File('./main2.pdf')
-#
-# # -------------------------------------------- CHANNEL_DOWN START-------------------------------------------------------
-#
-# # click turn of light
-# click_button(JP.Channel_down_jp128)
-# time.sleep(3)
-# click_button(JP.Channel_down_jp128)
-# time.sleep(10)
-#
-# # maximize video
-# click_button(JP.Maximize_video_jp128)
-# time.sleep(2)
-#
-# # take image
-# Take_Image(JP.Video_container_jp128, 'video.pdf')
-#
-# time.sleep(5)
-#
-# Convert_ProgressLog_text('channel_down.txt')
-# Text_To_Pdf('channel_down.txt', 'channel_down_jp128.pdf')
-#
-# click_button(JP.Maximize_video_jp128)
-# time.sleep(5)
-#
-# # maximize graph image and take image
-# click_button(JP.Maximize_graph_jp128)
-# time.sleep(5)
-#
-# Take_Image(JP.Graph_image_jp128, 'graph.pdf')
-#
-# click_button(JP.Maximize_graph_jp128)
-# time.sleep(5)
-#
-# Merger_Pdf('./channel_down_jp128.pdf', './video.pdf', './main1.pdf')
-# Merger_Pdf('./main1.pdf', 'graph.pdf', './main2.pdf')
-# Merger_Pdf('./main4.pdf', './main2.pdf', './main5.pdf')
-#
-# Remove_File('./channel_down_jp128.pdf')
-# Remove_File('./video.pdf')
-# Remove_File('./main4.pdf')
-# Remove_File('./graph.pdf')
-# Remove_File('./main1.pdf')
-# Remove_File('./main2.pdf')
-#
-# # -------------------------------------------- TURN_OFF_TV START-------------------------------------------------------
-#
-# # click turn of light
-# click_button(JP.Turn_off_tv_jp128)
-# time.sleep(10)
-#
-# # maximize video
-# click_button(JP.Maximize_video_jp128)
-# time.sleep(2)
-#
-# # take image
-# Take_Image(JP.Video_container_jp128, 'video.pdf')
-#
-# time.sleep(5)
-#
-# Convert_ProgressLog_text('Turn_off.txt')
-# Text_To_Pdf('Turn_off.txt', 'Turn_off_jp128.pdf')
-#
-# click_button(JP.Maximize_video_jp128)
-# time.sleep(5)
-#
-# # maximize graph image and take image
-# click_button(JP.Maximize_graph_jp128)
-# time.sleep(5)
-#
-# Take_Image(JP.Graph_image_jp128, 'graph.pdf')
-#
-# click_button(JP.Maximize_graph_jp128)
-# time.sleep(5)
-#
-# Merger_Pdf('./Turn_off_jp128.pdf', './video.pdf', './main1.pdf')
-# Merger_Pdf('./main1.pdf', 'graph.pdf', './main2.pdf')
-# Merger_Pdf('./main5.pdf', './main2.pdf', './main6.pdf')
-#
-# Remove_File('./Turn_off_jp128.pdf')
-# Remove_File('./video.pdf')
-# Remove_File('./main5.pdf')
-# Remove_File('./graph.pdf')
-# Remove_File('./main1.pdf')
-# Remove_File('./main2.pdf')
-#
-# # -------------------------------------------- TURN_OFF_LIGHT START-----------------------------------------------------
-#
-# # click turn of light
-# click_button(JP.Turn_off_light_jp128)
-# time.sleep(10)
-#
-# # maximize video
-# click_button(JP.Maximize_video_jp128)
-# time.sleep(2)
-#
-# # take image
-# Take_Image(JP.Video_container_jp128, 'video.pdf')
-#
-# time.sleep(5)
-#
-# Convert_ProgressLog_text('Turn_off_light.txt')
-# Text_To_Pdf('Turn_off_light.txt', 'Turn_off_light_jp128.pdf')
-#
-# click_button(JP.Maximize_video_jp128)
-# time.sleep(5)
-#
-# # maximize graph image and take image
-# click_button(JP.Maximize_graph_jp128)
-# time.sleep(5)
-#
-# Take_Image(JP.Graph_image_jp128, 'graph.pdf')
-#
-# click_button(JP.Maximize_graph_jp128)
-# time.sleep(5)
-#
-# Merger_Pdf('./Turn_off_light_jp128.pdf', './video.pdf', './main1.pdf')
-# Merger_Pdf('./main1.pdf', 'graph.pdf', './main2.pdf')
-# Merger_Pdf('./main6.pdf', './main2.pdf', './main7.pdf')
-#
-# Remove_File('./Turn_off_light_jp128.pdf')
-# Remove_File('./video.pdf')
-# Remove_File('./main6.pdf')
-# Remove_File('./graph.pdf')
-# Remove_File('./main1.pdf')
-# Remove_File('./main2.pdf')
-#
-# # -------------------------------------------- LIVE_VIDEO START-----------------------------------------------------
-#
-# click_button(JP.Maximize_live_video)
-# time.sleep(5)
-#
-# Take_Image(JP.Live_video_jp128, 'live.pdf')
-#
-# click_button(JP.Maximize_live_video)
-#
-# Merger_Pdf('./main7.pdf', './live.pdf', './Result_JP128.pdf')
-#
-# Remove_File('./main7.pdf')
-# Remove_File('./live.pdf')
-#
-# # Off the radio button
-# click_button(JP.Connect_Button)
-#
-#
+        # -------------------------------------------- HMI TESTING -----------------------------------------------
+
+        def HMI_testing():
+            # START GIVING COMMANDS
+            CF.click_button(JP.turn_on_light_jp128)
+            CF.record_audio("voice1.wav")
+            time.sleep(5)
+            CF.write_result(pdf1, 'HMI Tracking :')
+            CF.update_progress_log(pdf1)
+            CF.add_audio_link_pdf(pdf1, 'Light-On : ', 'file:///D:/TenXer/gmail_login/JP128/screenshot/voice1.wav')
+            time.sleep(5)
+            pdf1.ln(5)
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            CF.take_image(pdf1, JP.maximize_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image2.png',
+                          'image2.png')
+
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(5)
+
+            # TURN OFF LIGHT
+            CF.click_button(JP.Turn_off_light_jp128)
+            CF.record_audio("voice2.wav")
+            time.sleep(5)
+            CF.update_progress_log(pdf1)
+            CF.add_audio_link_pdf(pdf1, 'Light-Off : ', 'file:///D:/TenXer/gmail_login/JP128/screenshot/voice2.wav')
+            time.sleep(5)
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            CF.take_image(pdf1, JP.maximize_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image3.png',
+                          'image3.png')
+
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(5)
+
+            # TURN ON TV
+            CF.click_button(JP.Turn_on_tv_jp128)
+            CF.record_audio("voice3.wav")
+            time.sleep(5)
+            CF.update_progress_log(pdf1)
+            CF.add_audio_link_pdf(pdf1, 'Light-On-TV : ', 'file:///D:/TenXer/gmail_login/JP128/screenshot/voice3.wav')
+            time.sleep(5)
+            pdf1.ln(5)
+            pdf1.set_text_color(0, 0, 0)
+            pdf1.cell(0, 30, txt="IMAGE", ln=1, align='L')
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            CF.take_image(pdf1, JP.maximize_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image4.png',
+                          'image4.png')
+
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            # CHANNEL UP
+            CF.click_button(JP.Channel_up_jp128)
+            CF.record_audio("voice4.wav")
+            time.sleep(5)
+            CF.update_progress_log(pdf1)
+            CF.add_audio_link_pdf(pdf1, 'Channel-UP : ', 'file:///D:/TenXer/gmail_login/JP128/screenshot/voice4.wav')
+            time.sleep(5)
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            CF.take_image(pdf1, JP.maximize_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image5.png',
+                          'image5.png')
+
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(75)
+
+            # CHANNEL DOWN
+            CF.click_button(JP.Channel_down_jp128)
+            CF.record_audio("voice5.wav")
+            time.sleep(5)
+            CF.update_progress_log(pdf1)
+            CF.add_audio_link_pdf(pdf1, 'Channel-Down : ', 'file:///D:/TenXer/gmail_login/JP128/screenshot/voice5.wav')
+            time.sleep(5)
+            pdf1.ln(11)
+            pdf1.set_text_color(0, 0, 0)
+            pdf1.cell(0, 30, txt="IMAGE", ln=1, align='L')
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            CF.take_image(pdf1, JP.maximize_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image6.png',
+                          'image6.png')
+
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            # TURN OFF TV
+            CF.click_button(JP.Turn_off_tv_jp128)
+            CF.record_audio("voice6.wav")
+            time.sleep(5)
+            CF.update_progress_log(pdf1)
+            CF.add_audio_link_pdf(pdf1, 'Turn-Off-TV : ', 'file:///D:/TenXer/gmail_login/JP128/screenshot/voice6.wav')
+            time.sleep(5)
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            CF.take_image(pdf1, JP.maximize_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image7.png',
+                          'image7.png')
+
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+            print(' complete HMI testing.....')
+
+            # -------------------------------------------- PERFORMANCE UNDER NOICE ROAD --------------------------------
+
+        def noice_road():
+            #     # SCROLL_PAUSE_TIME = 1
+            #     # for i in range(1, 2):
+            #     #     x_path = f'//*[@id="helpCarousel"]/div[{i}]'
+            #     #     CF.actions.move_to_element(CF.driver.find_element(By.XPATH, x_path)).perform()
+            #     #     time.sleep(SCROLL_PAUSE_TIME)
+            #     # time.sleep(5)
+            CF.write_result(pdf1, 'HMI-Tracking : (PERFORMANCE UNDER NOICE ROAD)--')
+            noice_button = CF.driver.find_element(By.XPATH, JP.induce_noice_button).click()
+            print('jjjj')
+            time.sleep(5)
+            CF.click_button(JP.river_button)
+            time.sleep(3)
+
+            # START GIVING COMMANDS
+            CF.click_button(JP.turn_on_light_jp128)
+            CF.record_audio("voice7.wav")
+            time.sleep(5)
+            CF.update_progress_log(pdf1)
+            CF.add_audio_link_pdf(pdf1, 'Light-On : ', 'file:///D:/TenXer/gmail_login/JP128/screenshot/voice7.wav')
+            time.sleep(5)
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            CF.take_image(pdf1, JP.maximize_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image8.png',
+                          'image8.png')
+
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            # TURN OFF LIGHT
+            CF.click_button(JP.Turn_off_light_jp128)
+            CF.record_audio("voice8.wav")
+            time.sleep(10)
+            CF.update_progress_log(pdf1)
+            CF.add_audio_link_pdf(pdf1, 'Light-Off : ', 'file:///D:/TenXer/gmail_login/JP128/screenshot/voice8.wav')
+            time.sleep(5)
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            CF.take_image(pdf1, JP.maximize_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image9.png',
+                          'image9.png')
+
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            # TURN ON TV
+            CF.click_button(JP.Turn_on_tv_jp128)
+            CF.record_audio("voice9.wav")
+            time.sleep(10)
+            CF.update_progress_log(pdf1)
+            CF.add_audio_link_pdf(pdf1, 'Light-On-TV : ', 'file:///D:/TenXer/gmail_login/JP128/screenshot/voice9.wav')
+            time.sleep(5)
+            pdf1.ln(11)
+            pdf1.set_text_color(0, 0, 0)
+            pdf1.cell(0, 30, txt="IMAGE", ln=1, align='L')
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            CF.take_image(pdf1, JP.maximize_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image10.png',
+                          'image10.png')
+
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            # CHANNEL UP
+            CF.click_button(JP.Channel_up_jp128)
+            CF.record_audio("voice10.wav")
+            time.sleep(10)
+            CF.update_progress_log(pdf1)
+            CF.add_audio_link_pdf(pdf1, 'Channel-UP : ', 'file:///D:/TenXer/gmail_login/JP128/screenshot/voice10.wav')
+            time.sleep(5)
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            CF.take_image(pdf1, JP.maximize_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image11.png',
+                          'image11.png')
+
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(5)
+            print(' complete road testing.....')
+
+            # -------------------------------------------- PERFORMANCE UNDER NOICE TRAFFIC ----------------------------
+
+        def traffic_noice():
+            CF.click_button(JP.traffic_button)
+            time.sleep(3)
+            CF.write_result(pdf1, 'HMI-Tracking : (PERFORMANCE UNDER NOICE TRAFFIC)--')
+            time.sleep(5)
+
+            # START GIVING COMMANDS
+            CF.click_button(JP.turn_on_light_jp128)
+            CF.record_audio("voice11.wav")
+            time.sleep(10)
+            CF.update_progress_log(pdf1)
+            CF.add_audio_link_pdf(pdf1, 'Light-On : ', 'file:///D:/TenXer/gmail_login/JP128/screenshot/voice11.wav')
+            time.sleep(5)
+            pdf1.ln(11)
+            pdf1.set_text_color(0, 0, 0)
+            pdf1.cell(0, 30, txt="IMAGE", ln=1, align='L')
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            CF.take_image(pdf1, JP.maximize_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image12.png',
+                          'image12.png')
+
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            # TURN OFF LIGHT
+            CF.click_button(JP.Turn_off_light_jp128)
+            CF.record_audio("voice12.wav")
+            time.sleep(10)
+            CF.update_progress_log(pdf1)
+            CF.add_audio_link_pdf(pdf1, 'Light-Off : ', 'file:///D:/TenXer/gmail_login/JP128/screenshot/voice12.wav')
+            time.sleep(5)
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            CF.take_image(pdf1, JP.maximize_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image13.png',
+                          'image13.png')
+
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            # TURN ON TV
+            CF.click_button(JP.Turn_on_tv_jp128)
+            CF.record_audio("voice13.wav")
+            time.sleep(10)
+            CF.update_progress_log(pdf1)
+            CF.add_audio_link_pdf(pdf1, 'Light-On-TV : ', 'file:///D:/TenXer/gmail_login/JP128/screenshot/voice13.wav')
+            time.sleep(5)
+            pdf1.ln(11)
+            pdf1.set_text_color(0, 0, 0)
+            pdf1.cell(0, 30, txt="IMAGE", ln=1, align='L')
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            CF.take_image(pdf1, JP.maximize_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image14.png',
+                          'image14.png')
+
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            # CHANNEL UP
+            CF.click_button(JP.Channel_up_jp128)
+            CF.record_audio("voice14.wav")
+            time.sleep(10)
+            CF.update_progress_log(pdf1)
+            CF.add_audio_link_pdf(pdf1, 'Channel-UP : ', 'file:///D:/TenXer/gmail_login/JP128/screenshot/voice14.wav')
+            time.sleep(5)
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            CF.take_image(pdf1, JP.maximize_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image15.png',
+                          'image15.png')
+
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(5)
+            print(' complete traffic testing.....')
+
+            # # -------------------------------------------- PERFORMANCE UNDER NOICE BABBLE ---------------------------
+
+        def babble_noice():
+            CF.click_button(JP.babble_button)
+            time.sleep(3)
+            CF.write_result(pdf1, 'HMI-Tracking : (PERFORMANCE UNDER NOICE BABBLE Tracking)--')
+            time.sleep(5)
+
+            # START GIVING COMMANDS
+            CF.click_button(JP.turn_on_light_jp128)
+            CF.record_audio("voice15.wav")
+            time.sleep(10)
+            CF.update_progress_log(pdf1)
+            CF.add_audio_link_pdf(pdf1, 'Light-On : ', 'file:///D:/TenXer/gmail_login/JP128/screenshot/voice15.wav')
+            time.sleep(5)
+            pdf1.ln(11)
+            pdf1.set_text_color(0, 0, 0)
+            pdf1.cell(0, 30, txt="IMAGE", ln=1, align='L')
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            CF.take_image(pdf1, JP.maximize_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image16.png',
+                          'image16.png')
+
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            # TURN OFF LIGHT
+            CF.click_button(JP.Turn_off_light_jp128)
+            CF.record_audio("voice16.wav")
+            time.sleep(10)
+            CF.update_progress_log(pdf1)
+            CF.add_audio_link_pdf(pdf1, 'Light-Off : ', 'file:///D:/TenXer/gmail_login/JP128/screenshot/voice16.wav')
+            time.sleep(5)
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            CF.take_image(pdf1, JP.maximize_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image17.png',
+                          'image17.png')
+
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            # TURN ON TV
+            CF.click_button(JP.Turn_on_tv_jp128)
+            CF.record_audio("voice17.wav")
+            time.sleep(10)
+            CF.update_progress_log(pdf1)
+            CF.add_audio_link_pdf(pdf1, 'Light-On-TV : ', 'file:///D:/TenXer/gmail_login/JP128/screenshot/voice17.wav')
+            time.sleep(5)
+            pdf1.ln(11)
+            pdf1.set_text_color(0, 0, 0)
+            pdf1.cell(0, 30, txt="IMAGE", ln=1, align='L')
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            CF.take_image(pdf1, JP.maximize_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image18.png',
+                          'image18.png')
+
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            # CHANNEL UP
+            CF.click_button(JP.Channel_up_jp128)
+            CF.record_audio("voice18.wav")
+            time.sleep(10)
+            CF.update_progress_log(pdf1)
+            CF.add_audio_link_pdf(pdf1, 'Channel-UP : ', 'file:///D:/TenXer/gmail_login/JP128/screenshot/voice18.wav')
+            time.sleep(5)
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            CF.take_image(pdf1, JP.maximize_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image19.png',
+                          'image19.png')
+
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(5)
+            print(' complete babble testing.....')
+
+        # -------------------------------------------- 2 D DRAWING ENGINE ----------------------------------------------
+
+        def drawing_engine():
+            CF.click_button(JP.display_performance)
+            time.sleep(5)
+            CF.click_button(JP.d_drawing_button)
+            time.sleep(5)
+            CF.click_button(JP.click_apply_button)
+            time.sleep(5)
+            CF.write_result(pdf1, '2 D drawing Engine Tracking : ')
+            CF.update_progress_log(pdf1)
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            pdf1.cell(0, 30, txt="After on the switch---take screenshots", ln=1, align='L')
+            time.sleep(3)
+
+            CF.take_image(pdf1, JP.maximize_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image20.png',
+                          'image20.png')
+            time.sleep(3)
+
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(5)
+
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.Maximize_live_video)
+            time.sleep(7)
+
+            pdf1.cell(0, 30, txt="After on the switch---take screenshots", ln=1, align='L')
+            time.sleep(3)
+            CF.take_image(pdf1, JP.live_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image21.png',
+                          'image21.png')
+            time.sleep(3)
+
+            CF.click_button(JP.Maximize_live_video)
+            time.sleep(5)
+            CF.click_button(JP.d_drawing_button)
+            time.sleep(5)
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(7)
+
+            pdf1.cell(0, 30, txt="After off the switch---take screenshots", ln=1, align='L')
+            time.sleep(3)
+            pdf1.ln(2)
+
+            CF.take_image(pdf1, JP.maximize_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image22.png',
+                          'image22.png')
+            time.sleep(3)
+
+            CF.click_button(JP.maximize_video_jp128)
+            time.sleep(5)
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.Maximize_live_video)
+            time.sleep(7)
+
+            pdf1.cell(0, 30, txt="After off the switch---take screenshots", ln=1, align='L')
+            time.sleep(3)
+
+            CF.take_image(pdf1, JP.live_video_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image23.png',
+                          'image23.png')
+            time.sleep(3)
+
+            CF.click_button(JP.Maximize_live_video)
+            time.sleep(5)
+            # TAKE IMAGE AND ADD THE PDF
+            CF.click_button(JP.maximize_graph_button)
+            time.sleep(7)
+
+            pdf1.cell(0, 30, txt="After off the switch---take screenshots", ln=1, align='L')
+            time.sleep(3)
+
+            CF.take_image(pdf1, JP.graph_path, 'D:\\TenXer\\gmail_login\\JP128\\screenshot\\image24.png',
+                          'image24.png')
+            time.sleep(3)
+
+            CF.click_button(JP.maximize_graph_button)
+            time.sleep(5)
+            drawing_engine()
+        HMI_testing()
+        noice_road()
+        traffic_noice()
+        babble_noice()
+    else:
+        print('FAIL')
+
+
+header_function()
+
+pdf1.output('result.pdf')
