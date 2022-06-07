@@ -7,7 +7,7 @@ import Jp158_const as JP
 
 url = CS.evm_url
 
-CF.login_and_connect(JP.board_name)
+CF.login(JP.board_name)
 
 pdf = FPDF()
 pdf.add_page()

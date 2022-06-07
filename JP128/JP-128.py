@@ -10,7 +10,7 @@ url = CS.evm_url
 
 # -------------------------------------------- TURN_ON_LIGHT START------------------------------------------------------
 
-CF.login_and_connect(JP.board_name)
+CF.login(JP.board_name)
 
 pdf1 = FPDF()
 pdf1.add_page()
