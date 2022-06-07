@@ -9,7 +9,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 import os
 import constants as CS
 
-
 screenshot_path = r"./screenshot"
 PROGRESS_LOG = []
 if not os.path.isdir(screenshot_path):
@@ -47,7 +46,7 @@ def login_and_connect(board_name):
     time.sleep(10)
 
     click_button(CS.Connect_Button)
-    time.sleep(10)
+    time.sleep(15)
 
 
 def video_testing(pdf, switch_to_frame):

@@ -27,4 +27,4 @@ Video_refresh = '//*[@id="stream_refresh"]'
 
 kbps_path = '//*[@id="curbitrate1"]'
 
-
+progress_log_path = '//*[@id="console_status"]'
