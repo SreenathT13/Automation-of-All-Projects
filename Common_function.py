@@ -21,7 +21,7 @@ def click_button(UI_button):
     live.click()
 
 
-def login(board_name):
+def login_and_connect(board_name):
     driver.get(CS.evm_url)
     click_button(CS.login)
     time.sleep(3)
