@@ -1,4 +1,3 @@
-
 login = '/html/body/div[1]/div/div/div/div/div/div[1]/div[1]/nav/div[5]/ul/li/a'
 
 login_url_1 = '/html/body/div[1]/div/div/div/div/div/div[1]/div[1]/nav/div[5]/ul/li/div/a[2]'
@@ -28,3 +27,22 @@ Video_refresh = '//*[@id="stream_refresh"]'
 kbps_path = '//*[@id="curbitrate1"]'
 
 progress_log_path = '//*[@id="console_status"]'
+
+old_connect_button = '//*[@id="navbar6"]/ul[3]/li[2]/div/span'
+
+old_connection_path = '//*[@id="navbar6"]/ul[3]/li[2]/div'
+
+old_progress_log_path = '//*[@id="console_status"]/div/tx-elements/div[2]/div/ul'
+
+old_live_video_xpath = '/html/body/div[1]/div/ng-content/div/div[2]/div/div/div/div[6]/div/div[2]/div/iframe'
+
+old_screenshot_video_path = '//*[@id="video-live"]'
+
+old_close_user_guide = '//*[@id="render-main"]/div/div[6]/div[2]/button[1]'
+
+old_refresh_button = '//*[@id="register"]'
+
+old_live_video_path = '/html/body/div[1]/div/ng-content/div/div[2]/div/div/div/div[6]/div/div[2]/div/iframe'
+
+old_switch_to_frame = '//*[@id="video-live"]/div/div[2]/div/iframe'
+
