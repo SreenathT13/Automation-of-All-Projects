@@ -13,6 +13,8 @@ url = CS.evm_url
 screenshot_path = r"./screenshot"
 PROGRESS_LOG = []
 VR_LOG = []
+SLAVE_LOG = []
+
 if not os.path.isdir(screenshot_path):
     os.makedirs(screenshot_path)
 
@@ -153,6 +155,20 @@ def update_progress_log(pdf1):
     PROGRESS_LOG = progress_log
     if "Ready" in connectText.text:
         for line in latest_progres_data:
+            pdf1.set_text_color(0, 0, 0)
+            pdf1.cell(0, 10, txt=line, ln=1, align='L')
+
+
+def slave_log_path(pdf1):
+    global SLAVE_LOG
+    pdf1.set_font("Arial", size=12)
+    path = '//*[@id="default-dashboard"]/div[1]/nav/div[2]/form'
+    connectText = driver.find_element(By.XPATH, path)
+    progress_log = driver.find_element(By.XPATH, '//*[@id="85e79079-07e7-7719-6bda-59d3bf7dd5a6"]').text.split("\n")
+    latest_slave_data = progress_log[len(SLAVE_LOG):]
+    SLAVE_LOG = progress_log
+    if "Ready" in connectText.text:
+        for line in latest_slave_data:
             pdf1.set_text_color(0, 0, 0)
             pdf1.cell(0, 10, txt=line, ln=1, align='L')
 
