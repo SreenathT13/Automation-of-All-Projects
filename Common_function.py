@@ -71,6 +71,7 @@ def old_login_connect(board_name):
     time.sleep(10)
 
     wait_until_clickable(CS.connect_jp128)
+    time.sleep(10)
 
     driver.find_element(By.XPATH, CS.old_close_user_guide).click()
 
@@ -269,6 +270,10 @@ def wait_until_progress(string):
 def wait_until_clickable(xpath):
     secondButton = wait.until(EC.element_to_be_clickable((By.XPATH, xpath)))
     secondButton.click()
+
+
+def wait_until_old_connection_path():
+    wait.until(EC.text_to_be_present_in_element((By.XPATH, CS.old_connection_path), 'Ready'))
 
 
 # def Text_To_Pdf(txt_File, Pdf_file):

@@ -19,7 +19,10 @@ while 1:
         time.sleep(10)
         connectText = CF.driver.find_element(By.XPATH, CS.connection_path)
         if "Ready" in connectText.text:
+            CF.click_button(CS.live_button)
             CF.write_header(pdf, 'CN268-1')
+            CF.click_button(CN.start_button)
+            time.sleep(3)
             CF.wait_until_progress("SYSTEM READY")
             CF.write_result(pdf, 'Connection : ', 'START EVALUATING')
             CF.click_button(CN.maximize_live_video)
@@ -32,6 +35,7 @@ while 1:
                           'graph.png')
             CF.update_progress_log(pdf)
             time.sleep(3)
+            CF.write_result(pdf, 'Slave--Log : ', 'START EVALUATING')
             CF.slave_log_path(pdf)
             pdf.cell(0, 7, txt=date_time, align='L')
 

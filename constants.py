@@ -46,3 +46,9 @@ old_live_video_path = '/html/body/div[1]/div/ng-content/div/div[2]/div/div/div/d
 
 old_switch_to_frame = '//*[@id="video-live"]/div/div[2]/div/iframe'
 
+off_old_connect_button = '/html/body/div[1]/div/ng-content/div/div[1]/nav/div/ul[3]/li[2]/div/span[2]/span/span[1]'
+
+
+
+
+
