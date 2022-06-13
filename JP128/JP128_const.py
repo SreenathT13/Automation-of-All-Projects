@@ -1,4 +1,3 @@
-
 connect_result_path = '//*[@id="default-dashboard"]/div[1]/nav/div[2]/form'
 
 turn_on_light_jp128 = '//*[@id="{{}}"]/div[2]/div/div/div/button'
@@ -36,7 +35,7 @@ Turn_off_light_jp128 = '/html/body/div[1]/div/ng-content/div/div[2]/div/div/div[
                        '2]/div/div/div/button '
 
 Maximize_live_video = '/html/body/div[1]/div/ng-content/div/div[2]/div/div/div[1]/div[2]/div[2]/div/div/div/div/ul/li[' \
-                   '5]/div/div/tx-elements/div[2]/div/div/div[1]/div/div[1] '
+                      '5]/div/div/tx-elements/div[2]/div/div/div[1]/div/div[1] '
 
 live_video_path = '//*[@id="77a46be1-2b26-51c7-f423-cd51ae5350e2"]/div/tx-elements/div[2]/div/div'
 
@@ -66,3 +65,4 @@ switch_to_frame = '//*[@id="77a46be1-2b26-51c7-f423-cd51ae5350e2"]/div''/tx-elem
 
 board_name = 'JP128'
 
+'//*[@id="77a46be1-2b26-51c7-f423-cd51ae5350e2"]/div/tx-elements/div[2]/div/div/div[3]/iframe'

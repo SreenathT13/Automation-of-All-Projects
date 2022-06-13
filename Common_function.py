@@ -12,6 +12,7 @@ import constants as CS
 url = CS.evm_url
 screenshot_path = r"./screenshot"
 PROGRESS_LOG = []
+VR_LOG = []
 if not os.path.isdir(screenshot_path):
     os.makedirs(screenshot_path)
 
@@ -41,13 +42,8 @@ def login_and_connect(board_name):
     search_element = '//*[@id="formSerachBar"]'
     inputElement = wait.until(EC.element_to_be_clickable((By.XPATH, search_element)))
     inputElement.send_keys(board_name)
-    time.sleep(10)
-
-    click_button(CS.connect_jp128)
-    time.sleep(10)
-
-    click_button(CS.Connect_Button)
-    time.sleep(15)
+    wait_until_clickable(CS.connect_jp128)
+    wait_until_clickable(CS.Connect_Button)
 
 
 def old_login_connect(board_name):
@@ -72,13 +68,11 @@ def old_login_connect(board_name):
     inputElement.send_keys(board_name)
     time.sleep(10)
 
-    click_button(CS.connect_jp128)
-    time.sleep(20)
+    wait_until_clickable(CS.connect_jp128)
 
     driver.find_element(By.XPATH, CS.old_close_user_guide).click()
 
-    click_button(CS.old_connect_button)
-    time.sleep(15)
+    wait_until_clickable(CS.old_connect_button)
 
 
 def video_testing(pdf, switch_to_frame):
@@ -123,6 +117,19 @@ def write_result(pdf1, test_case, right_txt):
         pdf1.cell(0, 25, txt="FAIL", ln=1, align='R')
 
 
+def old_write_result(pdf1, test_case, right_txt):
+    pdf1.set_font("Arial", 'B', size=12)
+    progress_log = driver.find_element(By.XPATH, '//*[@id="console_status"]/div/tx-elements/div[2]/div/ul').text
+    pdf1.set_text_color(0, 0, 0)
+    pdf1.cell(0, 30, txt=str(test_case), ln=0, align='L')
+    if right_txt in progress_log:
+        pdf1.set_text_color(0, 128, 0)
+        pdf1.cell(0, 30, txt="PASS", ln=1, align='R')
+    else:
+        pdf1.set_text_color(255, 0, 0)
+        pdf1.cell(0, 25, txt="FAIL", ln=1, align='R')
+
+
 # def old_write_result(pdf1, test_case, right_txt):
 #     pdf1.set_font("Arial", 'B', size=12)
 #     progress_log = driver.find_element(By.XPATH, '//*[@id="console_status"]').text
@@ -150,6 +157,20 @@ def update_progress_log(pdf1):
             pdf1.cell(0, 10, txt=line, ln=1, align='L')
 
 
+def update_VR_log(pdf1):
+    global VR_LOG
+    pdf1.set_font("Arial", size=12)
+    path = '//*[@id="default-dashboard"]/div[1]/nav/div[2]/form'
+    connectText = driver.find_element(By.XPATH, path)
+    progress_log = driver.find_element(By.XPATH, '//*[@id="11f1e3dc-7e13-2931-ab0c-e3893cab89d3"]').text.split("\n")
+    latest_progres_data = progress_log[len(VR_LOG):]
+    VR_LOG = progress_log
+    if "Ready" in connectText.text:
+        for line in latest_progres_data:
+            pdf1.set_text_color(0, 0, 0)
+            pdf1.cell(0, 10, txt=line, ln=1, align='L')
+
+
 def old_update_progress_log(pdf1):
     global PROGRESS_LOG
     pdf1.set_font("Arial", size=12)
@@ -168,6 +189,7 @@ def old_update_progress_log(pdf1):
 def take_image(pdf1, Image_Path, img, image):
     Image1 = driver.find_element(By.XPATH, Image_Path)
     Image1.screenshot(screenshot_path + "/" + image)
+    pdf1.cell(40)
     pdf1.image(img, x=50, w=100, h=50)
     pdf1.ln(5)
 
@@ -220,8 +242,12 @@ def add_audio_link_pdf(pdf1, test_name, LINK):
     pdf1.cell(0, 30, txt=str(LINK), ln=1, align='R', link=LINK)
 
 
-def wait_until_progress(string):
+def wait_until_old_progress(string):
     wait.until(EC.text_to_be_present_in_element((By.XPATH, CS.old_progress_log_path), string))
+
+
+def wait_until_progress(string):
+    wait.until(EC.text_to_be_present_in_element((By.XPATH, CS.progress_log_path), string))
 
 
 def wait_until_clickable(xpath):

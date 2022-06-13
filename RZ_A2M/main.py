@@ -12,10 +12,12 @@ while 1:
     import constants as CS
 
     pdf = FPDF()
+    date_time = (CF.e.strftime("Time : %b %d %Y %H:%M:%S"))
 
 
     def header_function():
         CF.login_and_connect(RZ.board_name)
+        time.sleep(5)
         connectText = CF.driver.find_element(By.XPATH, CS.connection_path)
         if "Ready" in connectText.text:
             CF.click_button(CS.live_button)
@@ -51,6 +53,7 @@ while 1:
                                                        '.png', 'monitor_stream_1.png')
             time.sleep(5)
             CF.click_button(RZ.stop_button_path)
+            pdf.cell(0, 7, txt=date_time, align='L')
 
 
         face_detection_function()
@@ -69,17 +72,18 @@ while 1:
             CF.click_button(RZ.start_button_path)
             print('click start')
             CF.wait.until(CF.EC.text_to_be_present_in_element((By.XPATH, CS.connection_path), "Ready"))
+            time.sleep(5)
             CF.write_result(pdf, 'Barcode_scanner_function : ', 'START EVALUATING')
             CF.update_progress_log(pdf)
             CF.take_image(pdf, RZ.setup_stream_path, 'D:\\TenXer\\gmail_login\\RZ_A2M\\screenshot\\setup_stream_2.png',
                           'setup_stream_2.png')
             time.sleep(5)
-            pdf.cell(40)
             CF.take_image(pdf, RZ.monitor_stream_path, 'D:\\TenXer\\gmail_login\\RZ_A2M\\screenshot\\monitor_stream_2'
                                                        '.png', 'monitor_stream_2.png')
             CF.click_button(RZ.stop_button_path)
             time.sleep(5)
             print('click stop')
+            pdf.cell(0, 7, txt=date_time, align='L')
 
 
         barcode_scanner_function()

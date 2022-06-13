@@ -12,6 +12,7 @@ while 1:
     import constants as CS
 
     pdf = FPDF()
+    date_time = (CF.e.strftime("Time : %b %d %Y %H:%M:%S"))
 
 
     def header_function():
@@ -41,6 +42,7 @@ while 1:
     if choice == 1:
         pdf.add_page()
         header_function()
+        pdf.cell(0, 7, txt=date_time, align='L')
         pdf.output('result.pdf')
         CF.click_button(CS.old_connect_button)
         exit()
@@ -66,6 +68,7 @@ while 1:
             CF.old_update_progress_log(pdf)
             CF.take_image(pdf, CN.graph_path, 'D:\\TenXer\\gmail_login\\CN299-1\\screenshot\\graph.png',
                           'graph.png')
+            pdf.cell(0, 7, txt=date_time, align='L')
             CF.click_button(CN.maximize_graph_path)
 
 

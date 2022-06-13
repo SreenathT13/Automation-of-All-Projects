@@ -5,14 +5,16 @@ import EU036_const as EU
 import Common_function as CF
 import constants as CS
 
-url = CS.evm_url
-CF.login_and_connect(EU.board_name)
+# url = CS.evm_url
 
 pdf = FPDF()
 pdf.add_page()
+date_time = (CF.e.strftime("Time : %b %d %Y %H:%M:%S"))
 
 
 def main_function():
+    CF.login_and_connect(EU.board_name)
+    time.sleep(10)
     CF.write_header(pdf, 'EU036')
     connectText = CF.driver.find_element(By.XPATH, CS.connection_path)
     if "Ready" in connectText.text:
@@ -41,7 +43,6 @@ def main_function():
             CF.click_button(EU.maximize_live_video)
             time.sleep(5)
 
-            pdf.cell(40)
             CF.take_image(pdf, EU.main_video_path, 'D:\\TenXer\\gmail_login\\EU036\\screenshot\\main_video.png',
                           'main_video.png')
             time.sleep(3)
@@ -51,7 +52,7 @@ def main_function():
             CF.click_button(EU.temperature_control_button)
             CF.wait.until(CF.EC.text_to_be_present_in_element((By.XPATH, CS.progress_log_path), "Blowing Hot-air"))
 
-            CF.write_result(pdf, 'temperature-control-test : ', 'Blowing Hot-air')
+            CF.write_result(pdf, 'Temperature-control-test : ', 'Blowing Hot-air')
             time.sleep(5)
 
             CF.update_progress_log(pdf)
@@ -66,6 +67,7 @@ def main_function():
 
             time.sleep(5)
             CF.click_button(EU.temperature_control_button)
+            pdf.cell(0, 7, txt=date_time, align='L')
 
         slider_function()
         temperature_control_function()
@@ -74,5 +76,5 @@ def main_function():
 main_function()
 pdf.output('result.pdf')
 
-time.sleep(5)
-CF.click_button(CS.Connect_Button)
+# time.sleep(5)
+# CF.click_button(CS.Connect_Button)
