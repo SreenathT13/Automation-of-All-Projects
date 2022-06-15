@@ -48,7 +48,7 @@ old_switch_to_frame = '//*[@id="video-live"]/div/div[2]/div/iframe'
 
 off_old_connect_button = '/html/body/div[1]/div/ng-content/div/div[1]/nav/div/ul[3]/li[2]/div/span[2]/span/span[1]'
 
-
+old_information = '//*[@id="409180ce-cf0b-ab77-89b7-e00ca17857cf"]/div/tx-elements/div[2]'
 
 
 
