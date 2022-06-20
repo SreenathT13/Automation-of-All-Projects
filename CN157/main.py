@@ -106,6 +106,7 @@ class CN157:
         pdf.cell(0, 7, txt=self.date_time, align='L')
         pdf.output('CN157_result.pdf')
         CF.click_button(CS.old_connect_button)
+        CF.driver.close()
 
 
 if __name__ == "__main__":

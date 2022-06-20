@@ -10,7 +10,7 @@ maximize_graph = '//*[@id="fd5f6db9-79a2-b39c-9b4b-463ffea2bc38"]/div/tx-element
 
 graph_path = '//*[@id="fd5f6db9-79a2-b39c-9b4b-463ffea2bc38"]/div/tx-elements/div[2]/div/div[3]/plotly/div/div/div'
 
-
+capacitor_path = '//*[@id="f5732d74-4c49-d6d9-638a-13b523f5a218"]'
 
 
 

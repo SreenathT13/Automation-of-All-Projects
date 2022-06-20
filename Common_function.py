@@ -7,6 +7,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 import os
+import pyaudio
+import wave
 import constants as CS
 
 url = CS.evm_url
@@ -28,7 +30,7 @@ class common:
         self.options.add_argument("--incognito")
         self.driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=self.options)
         self.actions = ActionChains(self.driver)
-        self.wait = WebDriverWait(self.driver, 60)
+        self.wait = WebDriverWait(self.driver, 280)
         self.e = datetime.datetime.now()
         self.driver.maximize_window()
 
@@ -229,9 +231,6 @@ class common:
         pdf1.ln(5)
 
     def record_audio(self, wav):
-        import pyaudio
-        import wave
-
         CHUNK = 1024
         FORMAT = pyaudio.paInt16
         CHANNELS = 1
@@ -286,6 +285,10 @@ class common:
 
     def wait_until_old_connection_path(self):
         self.wait.until(EC.text_to_be_present_in_element((By.XPATH, CS.old_connection_path), 'Ready'))
+
+    def wait_until_connection_path(self):
+        self.wait.until(EC.text_to_be_present_in_element((By.XPATH, CS.connection_path), "Ready"))
+
 
     # def Text_To_Pdf(txt_File, Pdf_file):
     #     pdf = FPDF())

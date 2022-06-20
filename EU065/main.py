@@ -97,6 +97,7 @@ class EU065:
         pdf.cell(0, 7, txt=self.date_time, align='L')
         pdf.output('EU065_result.pdf')
         CF.click_button(CS.off_old_connect_button)
+        CF.driver.close()
 
 
 if __name__ == "__main__":

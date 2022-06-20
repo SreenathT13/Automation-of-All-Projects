@@ -1,15 +1,12 @@
 import time
 from fpdf import FPDF
 from selenium.webdriver.common.by import By
-import EU036_const as EU
-import Common_function as CF
+from EU036 import EU036_const as EU
+from Common_function import common
 import constants as CS
 
-# url = CS.evm_url
-
 pdf = FPDF()
-pdf.add_page()
-date_time = (CF.e.strftime("Time : %b %d %Y %H:%M:%S"))
+CF = common()
 
 
 def main_function():
@@ -19,62 +16,71 @@ def main_function():
     connectText = CF.driver.find_element(By.XPATH, CS.connection_path)
     if "Ready" in connectText.text:
         CF.click_button(CS.live_button)
-        CF.wait.until(CF.EC.text_to_be_present_in_element((By.XPATH, CS.progress_log_path), "SYSTEM READY"))
+        CF.wait_until_progress("SYSTEM READY")
         CF.write_result(pdf, 'Connection : ', 'connected')
         time.sleep(10)
         CF.update_progress_log(pdf)
         print("Connection secure....")
-        CF.take_image(pdf, EU.live_video_path, 'D:\\TenXer\\gmail_login\\EU036\\screenshot\\live_video.png',
+        CF.take_image(pdf, EU.live_video_path, 'D:\\TenXer\\gmail_login\\Run_all_BOARDS\\screenshot\\live_video.png',
                       'live_video.png')
 
-        def slider_function():
-            # Scroll slider
-            Scroll = CF.driver.find_element(By.XPATH, EU.slider_path)
-            CF.ActionChains(CF.driver).drag_and_drop_by_offset(Scroll, 40, 0).perform()
-            CF.wait.until(CF.EC.text_to_be_present_in_element((By.XPATH, CS.progress_log_path), "Moving Reflector"))
 
-            CF.write_result(pdf, 'Slider-connection : ', 'Moving Reflector')
-            time.sleep(5)
+class EU036:
+    def __init__(self):
+        self.date_time = (CF.e.strftime("Time : %b %d %Y %H:%M:%S"))
 
-            CF.update_progress_log(pdf)
-            time.sleep(3)
+    def slider_function(self):
+        pdf.add_page()
+        main_function()
+        time.sleep(5)
+        # Scroll slider
+        Scroll = CF.driver.find_element(By.XPATH, EU.slider_path)
+        CF.actions.drag_and_drop_by_offset(Scroll, 40, 0).perform()
+        CF.wait_until_progress('Moving Reflector')
+        CF.write_result(pdf, 'Slider-connection : ', 'Moving Reflector')
+        time.sleep(5)
 
-            # Maximize main video
-            CF.click_button(EU.maximize_live_video)
-            time.sleep(5)
+        # Maximize main video
+        CF.click_button(EU.maximize_live_video)
+        time.sleep(5)
 
-            CF.take_image(pdf, EU.main_video_path, 'D:\\TenXer\\gmail_login\\EU036\\screenshot\\main_video.png',
-                          'main_video.png')
-            time.sleep(3)
-            CF.click_button(EU.maximize_live_video)
+        CF.take_image(pdf, EU.main_video_path, 'D:\\TenXer\\gmail_login\\Run_all_BOARDS\\screenshot\\main_video.png',
+                      'main_video.png')
+        time.sleep(3)
+        CF.click_button(EU.maximize_live_video)
+        CF.update_progress_log(pdf)
+        time.sleep(3)
+        pdf.cell(0, 7, txt=self.date_time, align='L')
 
-        def temperature_control_function():
-            CF.click_button(EU.temperature_control_button)
-            CF.wait.until(CF.EC.text_to_be_present_in_element((By.XPATH, CS.progress_log_path), "Blowing Hot-air"))
+        pdf.output('EU036_result.pdf')
+        CF.click_button(CS.Connect_Button)
+        CF.driver.close()
 
-            CF.write_result(pdf, 'Temperature-control-test : ', 'Blowing Hot-air')
-            time.sleep(5)
+    def temperature_control_function(self):
+        pdf.add_page()
+        main_function()
+        CF.click_button(EU.temperature_control_button)
+        CF.wait_until_progress("Blowing Hot-air")
 
-            CF.update_progress_log(pdf)
-            time.sleep(5)
-            CF.click_button(EU.maximize_live_video)
-            time.sleep(5)
+        CF.write_result(pdf, 'Temperature-control-test : ', 'Blowing Hot-air')
+        CF.click_button(EU.maximize_live_video)
+        time.sleep(5)
+        CF.take_image(pdf, EU.main_video_path, 'D:\\TenXer\\gmail_login\\Run_all_BOARDS\\screenshot\\main_video_2.png',
+                      'main_video_2.png')
+        CF.click_button(EU.maximize_live_video)
 
-            CF.take_image(pdf, EU.main_video_path, 'D:\\TenXer\\gmail_login\\EU036\\screenshot\\main_video_2.png',
-                          'main_video_2.png')
-            time.sleep(3)
-            CF.click_button(EU.maximize_live_video)
+        time.sleep(3)
+        CF.click_button(EU.temperature_control_button)
+        CF.update_progress_log(pdf)
+        time.sleep(3)
+        pdf.cell(0, 7, txt=self.date_time, align='L')
 
-            time.sleep(5)
-            CF.click_button(EU.temperature_control_button)
-            pdf.cell(0, 7, txt=date_time, align='L')
-
-        slider_function()
-        temperature_control_function()
+        pdf.output('EU036_result.pdf')
+        CF.click_button(CS.Connect_Button)
+        CF.driver.close()
 
 
-main_function()
-pdf.output('result.pdf')
-
-# time.sleep(5)
-# CF.click_button(CS.Connect_Button)
+if __name__ == "__main__":
+    stu = EU036()
+    stu.slider_function()
+    stu.temperature_control_function()

@@ -65,4 +65,7 @@ switch_to_frame = '//*[@id="77a46be1-2b26-51c7-f423-cd51ae5350e2"]/div''/tx-elem
 
 board_name = 'JP128'
 
-'//*[@id="77a46be1-2b26-51c7-f423-cd51ae5350e2"]/div/tx-elements/div[2]/div/div/div[3]/iframe'
+slider_path = '//*[@id="ff1c613d-e6ae-fbf2-c0b7-2fb258e8a6fd"]'
+
+i_agree_button = '/html/body/div[2]/button'
+

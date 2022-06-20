@@ -21,25 +21,32 @@ class CN268:
         if "Ready" in connectText.text:
             CF.click_button(CS.live_button)
             CF.write_header(pdf, 'CN268-1')
-            CF.click_button(CN.start_button)
-            time.sleep(3)
             CF.wait_until_progress("SYSTEM READY")
+            CF.update_progress_log(pdf)
+            CF.take_image(pdf, CN.graph_path, 'D:\\TenXer\\gmail_login\\Run_all_BOARDS\\screenshot\\graph2.png',
+                          'graph2.png')
+            time.sleep(3)
+            CF.click_button(CN.start_button)
+            time.sleep(8)
             CF.write_result(pdf, 'Connection : ', 'START EVALUATING')
             CF.click_button(CN.maximize_live_video)
             time.sleep(5)
-            CF.take_image(pdf, CN.live_video_path, 'D:\\TenXer\\gmail_login\\CN268-1\\screenshot\\live_video.png',
+            CF.take_image(pdf, CN.live_video_path, 'D:\\TenXer\\gmail_login\\Run_all_BOARDS\\screenshot\\live_video.png',
                           'live_video.png')
             CF.click_button(CN.maximize_live_video)
             time.sleep(5)
-            CF.take_image(pdf, CN.graph_path, 'D:\\TenXer\\gmail_login\\CN268-1\\screenshot\\graph.png',
+            CF.take_image(pdf, CN.graph_path, 'D:\\TenXer\\gmail_login\\Run_all_BOARDS\\screenshot\\graph.png',
                           'graph.png')
+            time.sleep(3)
             CF.update_progress_log(pdf)
             time.sleep(3)
             CF.write_result(pdf, 'Slave--Log : ', 'START EVALUATING')
+            CF.take_image(pdf, CN.graph_path, 'D:\\TenXer\\gmail_login\\Run_all_BOARDS\\screenshot\\graph1.png',
+                          'graph1.png')
             CF.slave_log_path(pdf)
             pdf.cell(0, 7, txt=self.date_time, align='L')
 
-            pdf.output('result.pdf')
+            pdf.output('CN268_result.pdf')
             CF.click_button(CS.Connect_Button)
             CF.driver.close()
 
