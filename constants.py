@@ -1,21 +1,54 @@
-url = 'https://renesas.evmlabs.com/user/form60dc441fc555b005b68d0e9f?APP=5f12f3d2c555b026c55ae500'
+login = '/html/body/div[1]/div/div/div/div/div/div[1]/div[1]/nav/div[5]/ul/li/a'
+
+login_url_1 = '/html/body/div[1]/div/div/div/div/div/div[1]/div[1]/nav/div[5]/ul/li/div/a[2]'
+
+submit = '/html/body/div[1]/div/div/div[1]/div/div[3]/form/div[4]/div[1]/button'
+
+username = "pritam@tenxertech.com"
+
+passwrd = "pritam1928"
+
+email_1 = '//*[@id="username"]'
+
+connect_jp128 = '//*[@id="formcanvas"]/div[2]/div/div/div[2]/div[2]/a'
+
 Connect_Button = '//*[@id="default-dashboard"]/div[1]/nav/div[2]/form/label/span'
-Live_Button = '//*[@id="render-main"]/div[1]/div[1]/div/ul/li[2]'
-Three_Watt_Button = '//*[@id="stepformcontainer"]/tx-elements[1]/div[2]/div/div/div/span[1]'
-Eight_Watt_Button = '//*[@id="stepformcontainer"]/tx-elements[1]/div[2]/div/div/div/span[2]'
-Eleven_Watt_Button = '//*[@id="stepformcontainer"]/tx-elements[1]/div[2]/div/div/div/span[3]'
-Next_Button = '//*[@id="stepformcontainer"]/tx-elements[4]/div[2]/div/div/div/button'
-Previous_Button = '//*[@id="stepformcontainer"]/tx-elements[3]/div[2]/div/div/div/button'
-Led_Button = '//*[@id="stepformcontainer"]/tx-elements[6]/div[2]/div/div/div/button'
-Temp_Button = '//*[@id="stepformcontainer"]/tx-elements[7]/div[2]/div/div/div/button'
-Humidity_Button = '//*[@id="stepformcontainer"]/tx-elements[8]/div[2]/div/div/div/button'
-Graph_Open_Button = '//*[@id="c64edc5c-b53d-fe87-2bbc-d2b18f64e023"]/div/tx-elements/div[2]/div/div[1]/div[2]/em'
-Graph_Close_Button = '//*[@id="c64edc5c-b53d-fe87-2bbc-d2b18f64e023"]/div/tx-elements/div[2]/div/div[1]/div[2]/em'
-Video_Open_button = '//*[@id="e00b90ab-27bb-53fa-7437-7f676d99107c"]/div/tx-elements/div[2]/div/div/div[1]/div/div[1]'
-Graph_Image = '//*[@id="c64edc5c-b53d-fe87-2bbc-d2b18f64e023"]/div/tx-elements/div[2]/div'
-Video_Image = '//*[@id="e00b90ab-27bb-53fa-7437-7f676d99107c"]/div/tx-elements/div[2]/div/div'
-Video_Close_Button = '//*[@id="e00b90ab-27bb-53fa-7437-7f676d99107c"]/div/tx-elements/div[2]/div/div/div[1]/div/div[1]'
-Disconnect_Button = '//*[@id="default-dashboard"]/div[1]/nav/div[2]/form/label/span'
-Three_watt_Battery = '//*[@id="eae56553-5125-2748-f500-429dc77de6c6"]'
-Full_screen = 'https://renesas.evmlabs.com/user/form60dc441fc555b005b68d0e9f?APP=5f12f3d2c555b026c55ae500'
-progress_log = '//*[@id="console_status"]/div/tx-elements/div[2]/div/ul'
+
+passwrd_1 = '//*[@id="password"]'
+
+evm_url = 'https://renesas.evmlabs.com/'
+
+live_button = '//*[@id="render-main"]/div[1]/div[1]/div/ul/li[2]'
+
+connection_path = '//*[@id="default-dashboard"]/div[1]/nav/div[2]/form'
+
+Video_refresh = '//*[@id="stream_refresh"]'
+
+kbps_path = '//*[@id="curbitrate1"]'
+
+progress_log_path = '//*[@id="console_status"]'
+
+old_connect_button = '//*[@id="navbar6"]/ul[3]/li[2]/div/span'
+
+old_connection_path = '//*[@id="navbar6"]/ul[3]/li[2]/div'
+
+old_progress_log_path = '//*[@id="console_status"]/div/tx-elements/div[2]/div/ul'
+
+old_live_video_xpath = '/html/body/div[1]/div/ng-content/div/div[2]/div/div/div/div[6]/div/div[2]/div/iframe'
+
+old_screenshot_video_path = '//*[@id="video-live"]'
+
+old_close_user_guide = '//*[@id="render-main"]/div/div[6]/div[2]/button[1]'
+
+old_refresh_button = '//*[@id="register"]'
+
+old_live_video_path = '/html/body/div[1]/div/ng-content/div/div[2]/div/div/div/div[6]/div/div[2]/div/iframe'
+
+old_switch_to_frame = '//*[@id="video-live"]/div/div[2]/div/iframe'
+
+off_old_connect_button = '/html/body/div[1]/div/ng-content/div/div[1]/nav/div/ul[3]/li[2]/div/span[2]/span/span[1]'
+
+old_information = '//*[@id="409180ce-cf0b-ab77-89b7-e00ca17857cf"]/div/tx-elements/div[2]'
+
+
+
